@@ -22,10 +22,10 @@ server.start(
       credentials: true,
       origin: config.frontEndURL,
     },
-    playground: config.env === 'development' ? '/' : false,
+    playground: '/',
     introspection: config.env === 'development',
     validationRules: req => [
-      depthLimit(5),
+      depthLimit(3),
       costAnalysis({
         variables: req.body.variables,
         maximumCost: 50,

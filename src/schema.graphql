@@ -1,10 +1,27 @@
 # import * from './generated/prisma.graphql'
 
+enum CaseResult {
+  DEATH
+  RECOVERY
+}
+
+type LatestResult {
+  confirmed: Int!
+  recoveries: Int!
+  deaths: Int!
+  lastUpdated: DateTime!
+}
+
+
 type Query {
+  latest: LatestResult!
+
   state(where: StateWhereUniqueInput!): State
   states(where: StateWhereInput, orderBy: StateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [State]!
   statesConnection(where: StateWhereInput, orderBy: StateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StateConnection!
-  case(where: CaseWhereUniqueInput!): Case
-  cases(where: CaseWhereInput, orderBy: CaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Case]!
-  casesConnection(where: CaseWhereInput, orderBy: CaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CaseConnection!
+
+  timeline(where: TimelineWhereUniqueInput!): Timeline
+  timelines(where: TimelineWhereInput, orderBy: TimelineOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Timeline]!
+  timelinesConnection(where: TimelineWhereInput, orderBy: TimelineOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TimelineConnection!
+
 }

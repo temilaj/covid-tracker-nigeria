@@ -1,20 +1,34 @@
-enum CaseResult {
-  DEATH
-  RECOVERY
-}
+# enum CaseResult {
+#   DEATH
+#   RECOVERY
+# }
 
 type State {
   id: ID! @id
   name: String!
-  slug: String!
-  cases: [Case]!
+  slug: String! @unique
+  timeline: [Timeline]!
 }
 
-type Case {
+# type Case {
+#   id: ID! @id
+#   isResolved: Boolean! @default(value: false)
+#   result: CaseResult
+
+#   createdAt: DateTime! @createdAt
+#   updatedAt: DateTime! @updatedAt
+# }
+
+
+type Timeline {
   id: ID! @id
-  isResolved: Boolean! @default(value: false)
-  result: CaseResult
+  confirmed: Int! @default(value: 0)
+  recoveries: Int! @default(value: 0)
+  deaths: Int! @default(value: 0)
+  dateRecorded: DateTime! 
+  state: State!
 
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
+
