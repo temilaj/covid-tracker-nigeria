@@ -1,0 +1,47 @@
+{
+  "name": "covid-tracker-nigeria",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon -e js,graphql -x node --inspect src/index.js",
+    "lint": "eslint **/**",
+    "deploy": "prisma deploy",
+    "format": "prettier --write --single-quote --print-width=120 --tab-width=2 \"src/**/*.js\""
+  },
+  "dependencies": {
+    "apollo-errors": "^1.9.0",
+    "compression": "^1.7.4",
+    "dotenv": "^8.2.0",
+    "graphql-cli": "^3.0.14",
+    "graphql-cost-analysis": "^1.0.3",
+    "graphql-depth-limit": "^1.1.0",
+    "graphql-yoga": "^1.18.3",
+    "nodemon": "^1.19.4",
+    "prisma": "^1.34.10",
+    "prisma-binding": "^2.3.16",
+    "rate-limiter-flexible": "^2.1.4",
+    "redis": "^2.8.0",
+    "slugs": "^0.1.3",
+    "yup": "^0.28.4"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-prettier": "^3.1.3",
+    "prettier": "^2.0.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/temilaj/covid-tracker-nigeria.git"
+  },
+  "author": "Temi Lajumoke <temi@temilajumoke.com> (http://temilajumoke.com)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/temilaj/covid-tracker-nigeria/issues"
+  },
+  "homepage": "https://github.com/temilaj/covid-tracker-nigeria#readme"
+}

@@ -1,0 +1,20 @@
+enum CaseResult {
+  DEATH
+  RECOVERY
+}
+
+type State {
+  id: ID! @id
+  name: String!
+  slug: String!
+  cases: [Case]!
+}
+
+type Case {
+  id: ID! @id
+  isResolved: Boolean! @default(value: false)
+  result: CaseResult
+
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
