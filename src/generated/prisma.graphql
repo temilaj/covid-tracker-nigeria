@@ -1,0 +1,690 @@
+# source: https://eu1.prisma.sh/covid-tracker-nigeria/covid-tracker-db/dev
+# timestamp: Thu Apr 23 2020 01:38:14 GMT+0100 (West Africa Standard Time)
+
+type AggregateCase {
+  count: Int!
+}
+
+type AggregateState {
+  count: Int!
+}
+
+type BatchPayload {
+  """The number of nodes that have been affected by the Batch operation."""
+  count: Long!
+}
+
+type Case implements Node {
+  id: ID!
+  isResolved: Boolean!
+  result: CaseResult
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type CaseConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [CaseEdge]!
+  aggregate: AggregateCase!
+}
+
+input CaseCreateInput {
+  id: ID
+  isResolved: Boolean
+  result: CaseResult
+}
+
+input CaseCreateManyInput {
+  create: [CaseCreateInput!]
+  connect: [CaseWhereUniqueInput!]
+}
+
+"""An edge in a connection."""
+type CaseEdge {
+  """The item at the end of the edge."""
+  node: Case!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum CaseOrderByInput {
+  id_ASC
+  id_DESC
+  isResolved_ASC
+  isResolved_DESC
+  result_ASC
+  result_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type CasePreviousValues {
+  id: ID!
+  isResolved: Boolean!
+  result: CaseResult
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum CaseResult {
+  DEATH
+  RECOVERY
+}
+
+input CaseScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CaseScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CaseScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CaseScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  isResolved: Boolean
+
+  """All values that are not equal to given value."""
+  isResolved_not: Boolean
+  result: CaseResult
+
+  """All values that are not equal to given value."""
+  result_not: CaseResult
+
+  """All values that are contained in given list."""
+  result_in: [CaseResult!]
+
+  """All values that are not contained in given list."""
+  result_not_in: [CaseResult!]
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+type CaseSubscriptionPayload {
+  mutation: MutationType!
+  node: Case
+  updatedFields: [String!]
+  previousValues: CasePreviousValues
+}
+
+input CaseSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CaseSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CaseSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CaseSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: CaseWhereInput
+}
+
+input CaseUpdateDataInput {
+  isResolved: Boolean
+  result: CaseResult
+}
+
+input CaseUpdateInput {
+  isResolved: Boolean
+  result: CaseResult
+}
+
+input CaseUpdateManyDataInput {
+  isResolved: Boolean
+  result: CaseResult
+}
+
+input CaseUpdateManyInput {
+  create: [CaseCreateInput!]
+  connect: [CaseWhereUniqueInput!]
+  set: [CaseWhereUniqueInput!]
+  disconnect: [CaseWhereUniqueInput!]
+  delete: [CaseWhereUniqueInput!]
+  update: [CaseUpdateWithWhereUniqueNestedInput!]
+  updateMany: [CaseUpdateManyWithWhereNestedInput!]
+  deleteMany: [CaseScalarWhereInput!]
+  upsert: [CaseUpsertWithWhereUniqueNestedInput!]
+}
+
+input CaseUpdateManyMutationInput {
+  isResolved: Boolean
+  result: CaseResult
+}
+
+input CaseUpdateManyWithWhereNestedInput {
+  where: CaseScalarWhereInput!
+  data: CaseUpdateManyDataInput!
+}
+
+input CaseUpdateWithWhereUniqueNestedInput {
+  where: CaseWhereUniqueInput!
+  data: CaseUpdateDataInput!
+}
+
+input CaseUpsertWithWhereUniqueNestedInput {
+  where: CaseWhereUniqueInput!
+  update: CaseUpdateDataInput!
+  create: CaseCreateInput!
+}
+
+input CaseWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CaseWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CaseWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CaseWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  isResolved: Boolean
+
+  """All values that are not equal to given value."""
+  isResolved_not: Boolean
+  result: CaseResult
+
+  """All values that are not equal to given value."""
+  result_not: CaseResult
+
+  """All values that are contained in given list."""
+  result_in: [CaseResult!]
+
+  """All values that are not contained in given list."""
+  result_not_in: [CaseResult!]
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+input CaseWhereUniqueInput {
+  id: ID
+}
+
+scalar DateTime
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createState(data: StateCreateInput!): State!
+  createCase(data: CaseCreateInput!): Case!
+  updateState(data: StateUpdateInput!, where: StateWhereUniqueInput!): State
+  updateCase(data: CaseUpdateInput!, where: CaseWhereUniqueInput!): Case
+  deleteState(where: StateWhereUniqueInput!): State
+  deleteCase(where: CaseWhereUniqueInput!): Case
+  upsertState(where: StateWhereUniqueInput!, create: StateCreateInput!, update: StateUpdateInput!): State!
+  upsertCase(where: CaseWhereUniqueInput!, create: CaseCreateInput!, update: CaseUpdateInput!): Case!
+  updateManyStates(data: StateUpdateManyMutationInput!, where: StateWhereInput): BatchPayload!
+  updateManyCases(data: CaseUpdateManyMutationInput!, where: CaseWhereInput): BatchPayload!
+  deleteManyStates(where: StateWhereInput): BatchPayload!
+  deleteManyCases(where: CaseWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query {
+  states(where: StateWhereInput, orderBy: StateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [State]!
+  cases(where: CaseWhereInput, orderBy: CaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Case]!
+  state(where: StateWhereUniqueInput!): State
+  case(where: CaseWhereUniqueInput!): Case
+  statesConnection(where: StateWhereInput, orderBy: StateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StateConnection!
+  casesConnection(where: CaseWhereInput, orderBy: CaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CaseConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type State implements Node {
+  id: ID!
+  name: String!
+  slug: String!
+  cases(where: CaseWhereInput, orderBy: CaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Case!]
+}
+
+"""A connection to a list of items."""
+type StateConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [StateEdge]!
+  aggregate: AggregateState!
+}
+
+input StateCreateInput {
+  id: ID
+  name: String!
+  slug: String!
+  cases: CaseCreateManyInput
+}
+
+"""An edge in a connection."""
+type StateEdge {
+  """The item at the end of the edge."""
+  node: State!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum StateOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  slug_ASC
+  slug_DESC
+}
+
+type StatePreviousValues {
+  id: ID!
+  name: String!
+  slug: String!
+}
+
+type StateSubscriptionPayload {
+  mutation: MutationType!
+  node: State
+  updatedFields: [String!]
+  previousValues: StatePreviousValues
+}
+
+input StateSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [StateSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [StateSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [StateSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: StateWhereInput
+}
+
+input StateUpdateInput {
+  name: String
+  slug: String
+  cases: CaseUpdateManyInput
+}
+
+input StateUpdateManyMutationInput {
+  name: String
+  slug: String
+}
+
+input StateWhereInput {
+  """Logical AND on all given filters."""
+  AND: [StateWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [StateWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [StateWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  slug: String
+
+  """All values that are not equal to given value."""
+  slug_not: String
+
+  """All values that are contained in given list."""
+  slug_in: [String!]
+
+  """All values that are not contained in given list."""
+  slug_not_in: [String!]
+
+  """All values less than the given value."""
+  slug_lt: String
+
+  """All values less than or equal the given value."""
+  slug_lte: String
+
+  """All values greater than the given value."""
+  slug_gt: String
+
+  """All values greater than or equal the given value."""
+  slug_gte: String
+
+  """All values containing the given string."""
+  slug_contains: String
+
+  """All values not containing the given string."""
+  slug_not_contains: String
+
+  """All values starting with the given string."""
+  slug_starts_with: String
+
+  """All values not starting with the given string."""
+  slug_not_starts_with: String
+
+  """All values ending with the given string."""
+  slug_ends_with: String
+
+  """All values not ending with the given string."""
+  slug_not_ends_with: String
+  cases_every: CaseWhereInput
+  cases_some: CaseWhereInput
+  cases_none: CaseWhereInput
+}
+
+input StateWhereUniqueInput {
+  id: ID
+}
+
+type Subscription {
+  state(where: StateSubscriptionWhereInput): StateSubscriptionPayload
+  case(where: CaseSubscriptionWhereInput): CaseSubscriptionPayload
+}

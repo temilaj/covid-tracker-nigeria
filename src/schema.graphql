@@ -1,0 +1,6 @@
+# import * from './generated/prisma.graphql'
+
+type Query {
+  states(where: StateWhereInput, orderBy: StateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [State]!
+  cases(where: CaseWhereInput, orderBy: CaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Case]!
+}
