@@ -1,6 +1,7 @@
 module.exports = {
   env: 'development',
   port: process.env.PORT || 4000,
+  frontEndURL: process.env.FRONTEND_URL,
   prismaSecret: process.env.PRISMA_SECRET,
   prismaEndpoint: process.env.PRISMA_ENDPOINT,
   appURL: process.env.APP_URL,
