@@ -64,4 +64,4 @@ Run `yarn start` or `npm start` to initialize and run the development server on 
 
 ## LICENSE
 
-### [MIT](./LICENSE) © [Temi Lajumoke](http://temilajumoke.com)
+### [MIT](./License.md) © [Temi Lajumoke](http://temilajumoke.com)
