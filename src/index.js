@@ -2,6 +2,7 @@ const depthLimit = require('graphql-depth-limit');
 const { default: costAnalysis } = require('graphql-cost-analysis');
 const { formatError } = require('apollo-errors');
 const compression = require('compression');
+const cors = require('cors');
 
 require('dotenv').config({});
 
@@ -12,16 +13,18 @@ server.express.use(compression());
 
 const config = require('../config');
 
+server.express.use(cors({
+  origin: true,
+  credentials: true
+}));
+
 server.express.get('/api/status', (req, res) => {
   return res.status(200).json({ isActive: true });
 });
 
 server.start(
   {
-    cors: {
-      credentials: true,
-      origin: config.frontEndURL,
-    },
+    cors: false,
     playground: '/',
     introspection: config.env === 'development',
     validationRules: req => [
