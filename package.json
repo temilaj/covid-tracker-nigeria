@@ -39,7 +39,7 @@
     "url": "git+https://github.com/temilaj/covid-tracker-nigeria.git"
   },
   "author": "Temi Lajumoke <temi@temilajumoke.com> (http://temilajumoke.com)",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/temilaj/covid-tracker-nigeria/issues"
   },
