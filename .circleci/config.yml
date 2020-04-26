@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  node: circleci/node@12.13.0
+  node: circleci/node@2.0.3
 jobs:
   build-and-run:
     executor:
@@ -12,6 +12,6 @@ jobs:
             - run: npm install
             - run: npm start
 workflows:
-    build-and-test:
+    build-and-run:
       jobs:
         - build-and-run
