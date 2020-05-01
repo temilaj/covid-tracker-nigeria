@@ -18,10 +18,6 @@ server.express.get('/api/status', (req, res) => {
 
 server.start(
   {
-    cors: {
-      credentials: true,
-      origin: config.frontEndURL,
-    },
     playground: '/',
     introspection: config.env === 'development',
     validationRules: req => [
