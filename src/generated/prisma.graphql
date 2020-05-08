@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/covid-tracker-nigeria/covid-tracker-db/dev
-# timestamp: Thu Apr 23 2020 02:48:23 GMT+0100 (West Africa Standard Time)
+# timestamp: Fri May 01 2020 01:46:54 GMT+0100 (West Africa Standard Time)
 
 type AggregateState {
   count: Int!
@@ -339,6 +339,7 @@ input StateWhereInput {
 
 input StateWhereUniqueInput {
   id: ID
+  slug: String
 }
 
 type Subscription {
