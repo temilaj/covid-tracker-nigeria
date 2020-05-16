@@ -21,6 +21,7 @@ type StateResult {
 
 type Query {
   latest: LatestResult!
+  todaysCases: LatestResult!
   resultsByState: [StateResult]!
 
   state(where: StateWhereUniqueInput!): State
