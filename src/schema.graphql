@@ -12,6 +12,12 @@ type LatestResult {
   lastUpdated: DateTime!
 }
 
+type ResultDelta {
+  confirmed: Int!
+  recoveries: Int!
+  deaths: Int!
+}
+
 type StateResult {
   state: String!
   confirmed: Int!
@@ -21,7 +27,7 @@ type StateResult {
 
 type Query {
   latest: LatestResult!
-  todaysCases: LatestResult!
+  todaysCases: ResultDelta!
   resultsByState: [StateResult]!
 
   state(where: StateWhereUniqueInput!): State

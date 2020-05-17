@@ -21,19 +21,22 @@ const StatQueries = {
     // TODO cache result
     const last24Hours = new Date(Date.now() - 3600000 * 24);
     const timelines = await ctx.db.query.timelines({ where: { dateRecorded_gt: last24Hours } });
-    const todaysCases = timelines.reduce(
-      (acc, timeline, index) => {
-        acc.confirmed += timeline.confirmed;
-        acc.recoveries += timeline.recoveries;
-        acc.deaths += timeline.deaths;
-        if (index === timelines.length - 1) {
-          acc.lastUpdated = timeline.dateRecorded;
-        }
-        return acc;
-      },
-      { confirmed: 0, recoveries: 0, deaths: 0 },
-    );
-    return todaysCases;
+    if (timelines.length > 0) {
+      const todaysCases = timelines.reduce(
+        (acc, timeline, index) => {
+          acc.confirmed += timeline.confirmed;
+          acc.recoveries += timeline.recoveries;
+          acc.deaths += timeline.deaths;
+          if (index === timelines.length - 1) {
+            acc.lastUpdated = timeline.dateRecorded;
+          }
+          return acc;
+        },
+        { confirmed: 0, recoveries: 0, deaths: 0 },
+      );
+      return todaysCases;
+    }
+    return { confirmed: 0, recoveries: 0, deaths: 0 };
   },
 
   async resultsByState(parent, args, ctx, info) {
