@@ -46,9 +46,12 @@ const StatQueries = {
   async latest(parent, args, ctx, info) {
     const cachedTimelines = await ctx.cache.getData('timelines');
     if (cachedTimelines !== null) {
+      console.info('getting data from cache');
       const latest = sortTimelines(JSON.parse(cachedTimelines));
       return latest;
     }
+    console.info('getting data from Database');
+
     const dbTimelines = await ctx.db.query.timelines(
       { orderBy: 'dateRecorded_ASC' },
       '{ confirmed recoveries deaths dateRecorded state { slug } }',
@@ -63,6 +66,8 @@ const StatQueries = {
     const last24Hours = new Date(Date.now() - 3600000 * 24);
 
     if (cachedTimelines !== null) {
+      console.info('getting data from cache');
+
       const todaysCases = [];
       JSON.parse(cachedTimelines).forEach(timeline => {
         return new Date(timeline.dateRecorded) > last24Hours ? todaysCases.push(timeline) : null;
@@ -70,6 +75,8 @@ const StatQueries = {
       const result = sortTimelines(todaysCases);
       return result;
     }
+    console.info('getting data from Database');
+
     const dbTimelines = await ctx.db.query.timelines({ where: { dateRecorded_gt: last24Hours } });
     if (dbTimelines.length > 0) {
       const result = sortTimelines(dbTimelines);
@@ -81,9 +88,12 @@ const StatQueries = {
   async resultsByState(parent, args, ctx, info) {
     const cachedTimelines = await ctx.cache.getData('timelines');
     if (cachedTimelines !== null) {
+      console.info('getting data from cache');
       const result = getResultByState(JSON.parse(cachedTimelines));
       return result;
     }
+    console.info('getting data from Database');
+
     const dbTimelines = await ctx.db.query.timelines(
       { orderBy: 'dateRecorded_ASC' },
       '{ confirmed recoveries deaths dateRecorded state { slug } }',
