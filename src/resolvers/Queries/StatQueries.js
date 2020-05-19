@@ -1,75 +1,95 @@
+function sortTimelines(timelines = []) {
+  const sortedTimelines = timelines.reduce(
+    (acc, timeline, index) => {
+      acc.confirmed += timeline.confirmed;
+      acc.recoveries += timeline.recoveries;
+      acc.deaths += timeline.deaths;
+      if (index === timelines.length - 1) {
+        acc.lastUpdated = timeline.dateRecorded;
+      }
+      return acc;
+    },
+    { confirmed: 0, recoveries: 0, deaths: 0 },
+  );
+  return sortedTimelines;
+}
+
+function getResultByState(timelines = []) {
+  const latest = timelines.reduce((acc, timeline, index) => {
+    const { slug } = timeline.state;
+    if (acc[slug] && acc[slug].confirmed >= 0) {
+      acc[slug].confirmed += timeline.confirmed;
+      acc[slug].recoveries += timeline.recoveries;
+      acc[slug].deaths += timeline.deaths;
+    } else {
+      acc[slug] = {};
+      acc[slug].confirmed = timeline.confirmed;
+      acc[slug].recoveries = timeline.recoveries;
+      acc[slug].deaths = timeline.deaths;
+    }
+    if (index === timelines.length - 1) {
+      acc.lastUpdated = timeline.dateRecorded;
+    }
+    return acc;
+  }, {});
+  const result = [];
+  Object.entries(latest).map(([key, value]) => {
+    if (typeof value === 'object') {
+      return result.push({ state: key, ...value });
+    }
+  });
+  result.sort((a, b) => (a.confirmed > b.confirmed ? -1 : 1));
+  return result;
+}
+
 const StatQueries = {
   async latest(parent, args, ctx, info) {
-    // TODO cache results in redis
-    const timelines = await ctx.db.query.timelines({ orderBy: 'dateRecorded_ASC' });
-    const latest = timelines.reduce(
-      (acc, timeline, index) => {
-        acc.confirmed += timeline.confirmed;
-        acc.recoveries += timeline.recoveries;
-        acc.deaths += timeline.deaths;
-        if (index === timelines.length - 1) {
-          acc.lastUpdated = timeline.dateRecorded;
-        }
-        return acc;
-      },
-      { confirmed: 0, recoveries: 0, deaths: 0 },
+    const cachedTimelines = await ctx.cache.getData('timelines');
+    if (cachedTimelines !== null) {
+      const latest = sortTimelines(JSON.parse(cachedTimelines));
+      return latest;
+    }
+    const dbTimelines = await ctx.db.query.timelines(
+      { orderBy: 'dateRecorded_ASC' },
+      '{ confirmed recoveries deaths dateRecorded state { slug } }',
     );
+    ctx.cache.setData('timelines', 3600, JSON.stringify(dbTimelines));
+    const latest = sortTimelines(dbTimelines);
     return latest;
   },
 
   async todaysCases(parent, args, ctx, info) {
-    // TODO cache result
+    const cachedTimelines = await ctx.cache.getData('timelines');
     const last24Hours = new Date(Date.now() - 3600000 * 24);
-    const timelines = await ctx.db.query.timelines({ where: { dateRecorded_gt: last24Hours } });
-    if (timelines.length > 0) {
-      const todaysCases = timelines.reduce(
-        (acc, timeline, index) => {
-          acc.confirmed += timeline.confirmed;
-          acc.recoveries += timeline.recoveries;
-          acc.deaths += timeline.deaths;
-          if (index === timelines.length - 1) {
-            acc.lastUpdated = timeline.dateRecorded;
-          }
-          return acc;
-        },
-        { confirmed: 0, recoveries: 0, deaths: 0 },
-      );
-      return todaysCases;
+
+    if (cachedTimelines !== null) {
+      const todaysCases = [];
+      JSON.parse(cachedTimelines).forEach(timeline => {
+        return new Date(timeline.dateRecorded) > last24Hours ? todaysCases.push(timeline) : null;
+      });
+      const result = sortTimelines(todaysCases);
+      return result;
+    }
+    const dbTimelines = await ctx.db.query.timelines({ where: { dateRecorded_gt: last24Hours } });
+    if (dbTimelines.length > 0) {
+      const result = sortTimelines(dbTimelines);
+      return result;
     }
     return { confirmed: 0, recoveries: 0, deaths: 0 };
   },
 
   async resultsByState(parent, args, ctx, info) {
-    // TODO cache results in redis
-    const timelines = await ctx.db.query.timelines(
+    const cachedTimelines = await ctx.cache.getData('timelines');
+    if (cachedTimelines !== null) {
+      const result = getResultByState(JSON.parse(cachedTimelines));
+      return result;
+    }
+    const dbTimelines = await ctx.db.query.timelines(
       { orderBy: 'dateRecorded_ASC' },
       '{ confirmed recoveries deaths dateRecorded state { slug } }',
     );
-    const latest = timelines.reduce((acc, timeline, index) => {
-      const { slug } = timeline.state;
-      if (acc[slug] && acc[slug].confirmed >= 0) {
-        acc[slug].confirmed += timeline.confirmed;
-        acc[slug].recoveries += timeline.recoveries;
-        acc[slug].deaths += timeline.deaths;
-      } else {
-        acc[slug] = {};
-        acc[slug].confirmed = timeline.confirmed;
-        acc[slug].recoveries = timeline.recoveries;
-        acc[slug].deaths = timeline.deaths;
-      }
-      if (index === timelines.length - 1) {
-        acc.lastUpdated = timeline.dateRecorded;
-      }
-      return acc;
-    }, {});
-    const result = [];
-    Object.entries(latest).map(([key, value]) => {
-      if (typeof value === 'object') {
-        return result.push({ state: key, ...value });
-      }
-    });
-    result.sort((a, b) => (a.confirmed > b.confirmed ? -1 : 1));
-    console.log(result);
+    ctx.cache.setData('timelines', 3600, JSON.stringify(dbTimelines));
+    const result = getResultByState(JSON.parse(cachedTimelines));
     return result;
   },
 };
