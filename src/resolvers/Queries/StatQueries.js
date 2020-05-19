@@ -84,7 +84,7 @@ const StatQueries = {
       { orderBy: 'dateRecorded_ASC' },
       '{ confirmed recoveries deaths dateRecorded state { slug } }',
     );
-    ctx.cache.setData('timelines', 3600, JSON.stringify(dbTimelines));
+    ctx.cache.setData('timelines', 86400, JSON.stringify(dbTimelines));
     const latest = sortTimelines(dbTimelines);
     return latest;
   },
@@ -126,7 +126,7 @@ const StatQueries = {
       { orderBy: 'dateRecorded_ASC' },
       '{ confirmed recoveries deaths dateRecorded state { slug } }',
     );
-    ctx.cache.setData('timelines', 3600, JSON.stringify(dbTimelines));
+    ctx.cache.setData('timelines', 86400, JSON.stringify(dbTimelines));
     const result = getResultByState(dbTimelines);
     return result;
   },
@@ -143,7 +143,7 @@ const StatQueries = {
       { orderBy: 'dateRecorded_ASC' },
       '{ confirmed recoveries deaths dateRecorded state { slug } }',
     );
-    ctx.cache.setData('timelines', 3600, JSON.stringify(dbTimelines));
+    ctx.cache.setData('timelines', 86400, JSON.stringify(dbTimelines));
     const result = getDailyTrend(dbTimelines);
     return result;
   },
