@@ -3,7 +3,8 @@ const redis = require('redis');
 
 const config = require('../config');
 
-const redisClient = redis.createClient(config.redis.port);
+const port = config.redis.port || process.env.REDISCLOUD_URL;
+const redisClient = redis.createClient(port);
 const getData = promisify(redisClient.get).bind(redisClient);
 const setData = redisClient.setex.bind(redisClient);
 
