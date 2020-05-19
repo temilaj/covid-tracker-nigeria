@@ -25,10 +25,18 @@ type StateResult {
   deaths: Int!
 }
 
+type DailyResult {
+  confirmed: Int!
+  recoveries: Int!
+  deaths: Int!
+  date: DateTime!
+}
+
 type Query {
   latest: LatestResult!
   todaysCases: ResultDelta!
   resultsByState: [StateResult]!
+  trend: [DailyResult]!
 
   state(where: StateWhereUniqueInput!): State
   states(where: StateWhereInput, orderBy: StateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [State]!

@@ -1,3 +1,5 @@
+const format = require('date-fns/format');
+
 function sortTimelines(timelines = []) {
   const sortedTimelines = timelines.reduce(
     (acc, timeline, index) => {
@@ -40,6 +42,32 @@ function getResultByState(timelines = []) {
   });
   result.sort((a, b) => (a.confirmed > b.confirmed ? -1 : 1));
   return result;
+}
+
+function getDailyTrend(timelines = []) {
+  if (timelines.length === 0) return [];
+
+  const result = timelines.reduce((acc, timeline, index) => {
+    const date = format(new Date(timeline.dateRecorded), 'MM-dd-yyyy');
+    if (acc[date] && acc[date].confirmed >= 0) {
+      acc[date].confirmed += timeline.confirmed;
+      acc[date].recoveries += timeline.recoveries;
+      acc[date].deaths += timeline.deaths;
+    } else {
+      acc[date] = {};
+      acc[date].confirmed = timeline.confirmed;
+      acc[date].recoveries = timeline.recoveries;
+      acc[date].deaths = timeline.deaths;
+    }
+    return acc;
+  }, {});
+  const trend = [];
+  Object.entries(result).map(([key, value]) => {
+    if (typeof value === 'object') {
+      return trend.push({ date: key, ...value });
+    }
+  });
+  return trend;
 }
 
 const StatQueries = {
@@ -99,7 +127,24 @@ const StatQueries = {
       '{ confirmed recoveries deaths dateRecorded state { slug } }',
     );
     ctx.cache.setData('timelines', 3600, JSON.stringify(dbTimelines));
-    const result = getResultByState(JSON.parse(cachedTimelines));
+    const result = getResultByState(dbTimelines);
+    return result;
+  },
+
+  async trend(parent, args, ctx, info) {
+    const cachedTimelines = await ctx.cache.getData('timelines');
+    if (cachedTimelines !== null) {
+      console.info('getting data from cache');
+      const result = getDailyTrend(JSON.parse(cachedTimelines));
+      return result;
+    }
+    console.info('getting data from Database');
+    const dbTimelines = await ctx.db.query.timelines(
+      { orderBy: 'dateRecorded_ASC' },
+      '{ confirmed recoveries deaths dateRecorded state { slug } }',
+    );
+    ctx.cache.setData('timelines', 3600, JSON.stringify(dbTimelines));
+    const result = getDailyTrend(dbTimelines);
     return result;
   },
 };
