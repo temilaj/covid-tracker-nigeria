@@ -53,18 +53,20 @@ function getDailyTrend(timelines = []) {
       acc[date].confirmed += timeline.confirmed;
       acc[date].recoveries += timeline.recoveries;
       acc[date].deaths += timeline.deaths;
+      acc[date].date = timeline.dateRecorded;
     } else {
       acc[date] = {};
       acc[date].confirmed = timeline.confirmed;
       acc[date].recoveries = timeline.recoveries;
       acc[date].deaths = timeline.deaths;
+      acc[date].date = timeline.dateRecorded;
     }
     return acc;
   }, {});
   const trend = [];
   Object.entries(result).map(([key, value]) => {
     if (typeof value === 'object') {
-      return trend.push({ date: key, ...value });
+      return trend.push({ ...value });
     }
   });
   return trend;
